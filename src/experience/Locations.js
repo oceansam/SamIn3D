@@ -1,12 +1,14 @@
 export const spawn = {
-	POSITION: { x: -2.2, y: 3.2, z: 0.5 },
-	TARGET: { x: -5, y: 0.5, z: 4.2 },
+	// POSITION: { x: -21.57, y: 32, z: 8 },
+	// TARGET: { x: -45, y: 11, z: 30 },
+	POSITION: { x: -21.57, y: 32, z: 8 },
+	TARGET: { x: -45, y: 11, z: 30 },
 };
 export const monitor1 = {
-	POSITION: { x: -3.8 + 1, y: 2.2 + 0.58, z: -0.05 },
-	TARGET: { x: -3.8, y: 2.2 + 0.58, z: -0.05 },
+	POSITION: { x: -27, y: 27.92, z: 0 },
+	TARGET: { x: -37.87, y: 27.92, z: 0 },
 };
 export const polaroid = {
-	POSITION: { x: -3.2, y: 2.2 + 0.5, z: 1.9 },
-	TARGET: { x: -3.4, y: 0, z: 2.05 },
+	POSITION: { x: -32, y: 28, z: 19 },
+	TARGET: { x: -34, y: 0, z: 22 },
 };

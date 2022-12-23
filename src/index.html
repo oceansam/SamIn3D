@@ -7,9 +7,35 @@
 		<link rel="stylesheet" href="style.css" />
 	</head>
 	<body>
-		<div class="css3D">
-			<canvas class="webgl"></canvas>
+		<!-- <div>
+			<div class="loading-screen">
+				<div class="row justify-center items-center full-height">
+					<div class="ball" />
+				</div>
+				<div class="load-progress txt-lg">
+					<span id="progress-value"></span>%
+				</div>
+				<div class="txt-md enter-container">Enter</div>
+			</div>
+		</div> -->
+		<div id="loader">
+			<div class="enter-screen">
+				<div class="row justify-center items-center full-height full-width">
+					<div class="text-white clickable enter-btn">E N T E R</div>
+				</div>
+			</div>
+			<div class="loading-screen">
+				<div class="row justify-center items-center full-height full-width">
+					<div class="ball" />
+				</div>
+				<div class="container-progress">
+					<div class="load-progress">0</div>
+					<div class="load-bar"></div>
+				</div>
+			</div>
 		</div>
+		<div id="css3d" />
+		<div id="webgl" />
 		<!-- <div class="info-icon paddle">
 			<div class="label">
 				<div>?</div>

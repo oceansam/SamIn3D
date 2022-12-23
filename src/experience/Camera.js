@@ -6,33 +6,32 @@ import TWEEN from "@tweenjs/tween.js";
 // Utils
 import Experience from "./Experience";
 import { monitor1, polaroid, spawn } from "./Locations";
-import { gsap } from "gsap";
+import { socialUrl } from "../Data";
 export default class Camera {
 	constructor() {
 		this.experience = new Experience();
 		this.sizes = this.experience.sizes;
 		this.scene = this.experience.scene;
-		this.canvas = this.experience.canvas;
+		this.renderer = this.experience.renderer;
 		this.monitor = this.scene.getObjectByName("monitorView");
 		this.setInstance();
-		this.setOrbitControls();
 	}
 	setInstance() {
 		this.instance = new THREE.PerspectiveCamera(
 			45,
 			this.sizes.width / this.sizes.height,
 			0.1,
-			100
+			5000
 		);
 
-		this.instance.position.set(-2.2, 3.2, 0.5);
-		const gui = new dat.GUI({
-			width: 400,
-		});
+		this.instance.position.copy(spawn.POSITION);
+		// const gui = new dat.GUI({
+		// 	width: 400,
+		// });
 
-		gui.add(this.instance.position, "x", -50, 50, 0.01);
-		gui.add(this.instance.position, "y", -50, 50, 0.01);
-		gui.add(this.instance.position, "z", -50, 50, 0.01);
+		// gui.add(this.instance.position, "x", -200, 200, 0.01);
+		// gui.add(this.instance.position, "y", -200, 200, 0.01);
+		// gui.add(this.instance.position, "z", -200, 200, 0.01);
 	}
 	// const worldIndex = this.scene.children.findIndex(
 	// 	(_child) => _child instanceof THREE.Group
@@ -44,8 +43,15 @@ export default class Camera {
 	// console.log(mesh.position);
 
 	setOrbitControls() {
-		this.controls = new OrbitControls(this.instance, this.canvas);
-		this.controls.target = new THREE.Vector3(-5, 0.5, 4.2);
+		console.log(this.experience.renderer);
+		this.controls = new OrbitControls(
+			this.instance,
+			this.experience.renderer.rendererGl.domElement
+		);
+		const { x, y, z } = spawn.TARGET;
+		this.controls.target = new THREE.Vector3(x, y, z);
+
+		// this.controls.target = new THREE.Vector3(-45, 11, 30);
 		this.controls.enableDamping = true;
 	}
 
@@ -73,6 +79,7 @@ export default class Camera {
 				tar = monitor1.TARGET;
 				// monitor.visible = true;
 				break;
+
 			case "Polaroid":
 				pos = polaroid.POSITION;
 				tar = polaroid.TARGET;

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import EventEmitter from "./EventEmitter";
 import Experience from "../Experience";
+import * as dat from "lil-gui";
 
 import { gsap } from "gsap";
 import { polaroid } from "../Locations";
@@ -50,11 +51,11 @@ export default class Raycast extends EventEmitter {
 				this.polaroidInteractables.includes(_c.object.name)
 			);
 		}
-		if (this.state.currentState === "Polaroid") {
-			return intersects.find((_c) => {
-				_c.object.name === "MenuNav1";
-			});
-		}
+		// if (this.state.currentState === "Polaroid") {
+		// 	return intersects.find((_c) => {
+		// 		_c.object.name === "MenuNav1";
+		// 	});
+		// }
 		return false;
 	}
 
@@ -62,22 +63,33 @@ export default class Raycast extends EventEmitter {
 		this.scene.remove(this.polaroidNav);
 	}
 
-	setHitBoxes() {
+	setPolaroidControls() {
 		// Polaroid hitbox setup
-		const hitBoxMaterial = new THREE.MeshBasicMaterial({ visible: false });
+		const hitBoxMaterial = new THREE.MeshBasicMaterial({
+			visible: false,
+			color: 0xff1f1f,
+		});
 		this.polaroidNav = new THREE.Group();
 
 		const { x, y, z } = polaroid.POSITION;
+		const boxScale = 0.3;
 		this.polaroidHitBox_next = new THREE.Mesh(
-			new THREE.BoxGeometry(0.02, 0.02, 0.02),
+			new THREE.BoxGeometry(boxScale, boxScale, boxScale),
 			hitBoxMaterial
 		);
 		this.polaroidHitBox_prev = new THREE.Mesh(
-			new THREE.BoxGeometry(0.02, 0.02, 0.02),
+			new THREE.BoxGeometry(boxScale, boxScale, boxScale),
 			hitBoxMaterial
 		);
-		this.polaroidHitBox_next.position.set(x - 0.065, 2.25, z - 0.055);
-		this.polaroidHitBox_prev.position.set(x + 0.075, 2.25, z + 0.045);
+		this.polaroidHitBox_next.position.set(x - 0.59, y - 5, z - 0.51);
+		const gui = new dat.GUI({
+			width: 400,
+		});
+
+		this.polaroidHitBox_prev.position.set(x + 0.68, y - 5, z + 0.4);
+		gui.add(this.polaroidHitBox_prev.position, "x", -50, 20, 0.0001);
+		gui.add(this.polaroidHitBox_prev.position, "y", -50, 20, 0.0001);
+		gui.add(this.polaroidHitBox_prev.position, "z", -50, 20, 0.0001);
 		this.polaroidHitBox_next.name = "nextButton";
 		this.polaroidHitBox_prev.name = "prevButton";
 

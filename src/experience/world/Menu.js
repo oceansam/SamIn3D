@@ -23,6 +23,9 @@ export default class Menu extends EventEmitter {
 		// Setup
 
 		window.addEventListener("click", (e) => {
+			if (this.state.currentState == "MenuText") {
+				return true;
+			}
 			console.log(this.mouse);
 			this.raycast.raycaster.setFromCamera(this.mouse, this.camera);
 			const intersects = this.raycast.raycaster.intersectObjects(
@@ -109,9 +112,9 @@ export default class Menu extends EventEmitter {
 	setHeader() {
 		this.createText(
 			"Samee Chowdhury",
-			0.15,
+			1.2,
 			0xffffff,
-			{ x: -2.4, y: 2.25, z: 2.5 },
+			{ x: -23.5, y: 23, z: 24.5 },
 			{ x: (-90 * Math.PI) / 180, y: 0, z: (180 * Math.PI) / 180 },
 			"Title"
 		);
@@ -119,33 +122,26 @@ export default class Menu extends EventEmitter {
 	setHtmlMenu() {
 		this.createText(
 			"Projects",
-			0.1,
+			1,
 			0xffffff,
-			{ x: -2.4, y: 2.25, z: 2.2 },
-			{ x: (-90 * Math.PI) / 180, y: 0, z: (180 * Math.PI) / 180 },
-			"MenuText"
-		);
-		this.createText(
-			"Experience",
-			0.1,
-			0xffffff,
-			{ x: -2.4, y: 2.25, z: 2.05 },
+			{ x: -23.5, y: 23, z: 22 },
 			{ x: (-90 * Math.PI) / 180, y: 0, z: (180 * Math.PI) / 180 },
 			"MenuText"
 		);
 		this.createText(
 			"Github",
-			0.1,
+			1,
 			0xffffff,
-			{ x: -2.4, y: 2.25, z: 1.9 },
+			{ x: -23.5, y: 23, z: 20.5 },
 			{ x: (-90 * Math.PI) / 180, y: 0, z: (180 * Math.PI) / 180 },
+
 			"MenuText"
 		);
 		this.createText(
 			"Linkedin",
-			0.1,
+			1,
 			0xffffff,
-			{ x: -2.4, y: 2.25, z: 1.75 },
+			{ x: -23.5, y: 23, z: 19 },
 			{ x: (-90 * Math.PI) / 180, y: 0, z: (180 * Math.PI) / 180 },
 			"MenuText"
 		);

@@ -2,7 +2,7 @@ export default [
 	{
 		name: "RoomModel",
 		type: "gltfCompressed",
-		path: "NewWebRoom.glb",
+		path: "NewWebRoomTest.glb",
 	},
 	{
 		name: "BakedRoom",
@@ -38,6 +38,11 @@ export default [
 		name: "BakedFrame",
 		type: "textureMap",
 		path: "FrameBaked.jpg",
+	},
+	{
+		name: "BakedDoor",
+		type: "textureMap",
+		path: "DoorBaked.jpg",
 	},
 	// Polaroids
 	{

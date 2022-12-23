@@ -13,33 +13,52 @@ export default class Renderer {
 	}
 
 	setInstance() {
-		// WebGL
-		this.instance = new THREE.WebGLRenderer({
-			canvas: this.canvas,
-			antialias: true,
-		});
-		this.instanceHTML = new CSS3DRenderer();
-		this.instanceHTML.domElement.style.position = "absolute";
-		this.instanceHTML.domElement.style.zIndex = 0;
-		this.instanceHTML.domElement.style.top = 0;
-		this.instance.outputEncoding = THREE.sRGBEncoding;
+		this.rendererCss = new CSS3DRenderer();
+		this.rendererCss.setSize(window.innerWidth, window.innerHeight);
+		this.rendererCss.domElement.style.position = "absolute";
+		this.rendererCss.domElement.style.position = "absolute";
+		this.rendererCss.domElement.style.top = 0;
+		document.querySelector("#css3d").appendChild(this.rendererCss.domElement);
 
-		this.instance.setSize(this.sizes.width, this.sizes.height);
-		this.instanceHTML.setSize(this.sizes.width, this.sizes.height);
+		this.rendererGl = new THREE.WebGLRenderer({ alpha: true });
+		this.rendererGl.setSize(window.innerWidth, window.innerHeight);
+		this.rendererGl.setClearColor(0x000000, 0.0);
+		this.rendererGl.shadowMap.enabled = true;
+		this.rendererGl.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+		this.rendererGl.outputEncoding = THREE.sRGBEncoding;
 
-		this.instance.setPixelRatio(this.sizes.pixelRatio);
+		document.querySelector("#webgl").appendChild(this.rendererGl.domElement);
+		// this.rendererCss.domElement.appendChild(this.rendererGl.domElement);
 
-		const container = document.querySelector(".css3D");
-		container.appendChild(this.instanceHTML.domElement);
+		// document.body.appendChild(this.rendererCss.domElement);
 	}
 
 	resize() {
-		this.instance.setSize(this.sizes.width, this.sizes.height);
-		this.instanceHTML.setSize(this.sizes.width, this.sizes.height);
-		this.instance.setPixelRatio(this.sizes.pixelRatio);
+		this.rendererGl.setSize(this.sizes.width, this.sizes.height);
+		this.rendererCss.setSize(this.sizes.width, this.sizes.height);
+		this.rendererGl.setPixelRatio(this.sizes.pixelRatio);
 	}
 	update() {
-		this.instance.render(this.scene, this.camera.instance);
-		this.instanceHTML.render(this.cssScene, this.camera.instance);
+		this.rendererGl.render(this.scene, this.camera.instance);
+		this.rendererCss.render(this.scene, this.camera.instance);
 	}
 }
+/**
+ * 		this.rendererCss = new CSS3DRenderer();
+		this.rendererCss.setSize(window.innerWidth, window.innerHeight);
+		this.rendererCss.domElement.style.position = "absolute";
+		this.rendererCss.domElement.style.top = 0;
+		this.rendererGl = new THREE.WebGLRenderer({ alpha: true });
+		this.rendererGl.setClearColor(0x000000, 0.0);
+		this.rendererGl.outputEncoding = THREE.sRGBEncoding;
+
+		this.rendererGl.setSize(window.innerWidth, window.innerHeight);
+
+		this.rendererGl.domElement.style.position = "absolute";
+		this.rendererGl.domElement.style.zIndex = 1;
+		this.rendererGl.domElement.style.top = 0;
+
+		// this.rendererGl.domElement.appendChild(this.rendererCss.domElement);
+		document.body.appendChild(this.rendererCss.domElement);
+		document.body.appendChild(this.rendererGl.domElement);
+ */

@@ -18,6 +18,7 @@ import sources from "./sources";
 
 // Styles
 import "../style.css";
+import { Loader } from "three";
 
 let instance = null;
 
@@ -27,9 +28,6 @@ export default class Experience {
 		if (instance) return instance;
 
 		instance = this;
-
-		this.canvas = canvas;
-
 		// Setup
 		this.sizes = new Sizes();
 		this.time = new Time();
@@ -38,6 +36,7 @@ export default class Experience {
 		this.resources = new Resources(sources);
 		this.camera = new Camera();
 		this.renderer = new Renderer();
+		this.camera.setOrbitControls();
 		this.world = new World();
 		this.materials = new Materials();
 		this.state = new State();
@@ -45,13 +44,12 @@ export default class Experience {
 		this.menu = new Menu();
 
 		this.menu.on("updateState", (newState) => {
-			console.log("updating state", newState);
 			this.updateState(newState);
 			if (newState === "Spawn") {
 				this.raycast.removeHitBoxes();
 			}
 			if (newState === "Polaroid") {
-				this.raycast.setHitBoxes();
+				this.raycast.setPolaroidControls();
 			}
 		});
 

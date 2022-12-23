@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import Loader from "../Loader";
 
 import EventEmitter from "./EventEmitter";
 
@@ -9,9 +10,9 @@ export default class Resources extends EventEmitter {
 	constructor(sources) {
 		super();
 		this.sources = sources;
-
+		this.screenLoader = new Loader();
 		// Setup
-		this.items = { materials: {} };
+		this.items = {};
 		this.toLoad = this.sources.length;
 		this.loaded = 0;
 		this.setLoaders();
@@ -50,10 +51,23 @@ export default class Resources extends EventEmitter {
 	}
 
 	sourceLoaded(source, file) {
+		const priorLoad = Math.floor(this.loaded / this.toLoad) * 75;
+
 		this.items[source.name] = file;
 		this.loaded++;
+		const postLoad = Math.round((this.loaded / this.toLoad) * 75);
+
+		this.screenLoader.updateProgressModel((1 - 1) * priorLoad + 1 * postLoad);
 		if (this.loaded === this.toLoad) {
-			console.log("Finished Loading");
+			// console.log("Finished Loading");
+			// const loadScreen = document.querySelector(".loading-screen");
+			// const loadingScreen = document.querySelector(".loader");
+			// const enterScreen = document.querySelector(".loader-start");
+			// loadingScreen.style.opacity = "0";
+			// setTimeout(() => loadingScreen.remove(), 1500);
+			// setTimeout(() => enterScreen.classList.add("fade"), 1500);
+			// enterScreen.addEventListener("click", () => loadScreen.remove());
+
 			this.trigger("ready");
 		}
 	}

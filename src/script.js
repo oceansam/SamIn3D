@@ -1,6 +1,6 @@
 import Experience from "./experience/Experience";
 
-const experience = new Experience(document.querySelector("canvas.webgl"));
+const experience = new Experience();
 // ----------------------------------------
 // import "./style.css";
 // import * as dat from "lil-gui";

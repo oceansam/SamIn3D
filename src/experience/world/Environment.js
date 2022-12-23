@@ -4,7 +4,8 @@ import Experience from "../Experience";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 import { monitor1 } from "../Locations";
 import gsap from "gsap";
-const SCREEN_SIZE = { w: 5, h: 5 };
+const SCREEN_SIZE = { w: 2080, h: 1080 };
+import * as dat from "lil-gui";
 
 export default class Environment {
 	constructor() {
@@ -71,6 +72,9 @@ export default class Environment {
 		this.monitor1 = this.model.children.find(
 			(_child) => _child.name === "MenuNav1"
 		);
+
+		this.door = this.model.children.find((_child) => _child.name === "Door");
+		this.model.scale.set(10, 10, 10);
 	}
 
 	/**
@@ -82,76 +86,99 @@ export default class Environment {
 			// this.room.material = this.materials.roomTexture;
 			// this.desk.material = this.materials.deskTexture;
 			this.room.traverse((e) => {
-				e.material = this.materials.roomTexture;
+				e.material = this.materials.textures.roomTexture;
 			});
 
 			this.paddle.traverse((e) => {
-				e.material = this.materials.paddleTexture;
+				e.material = this.materials.textures.paddleTexture;
 			});
 
 			this.desk.traverse((e) => {
-				e.material = this.materials.deskTexture;
+				e.material = this.materials.textures.deskTexture;
 			});
 
 			this.book.traverse((e) => {
-				e.material = this.materials.deskPropTexture;
+				e.material = this.materials.textures.propsTexture;
 			});
 
 			this.plant.traverse((e) => {
-				e.material = this.materials.deskPropTexture;
+				e.material = this.materials.textures.propsTexture;
 			});
 
 			this.lamp.traverse((e) => {
-				e.material = this.materials.deskPropTexture;
+				e.material = this.materials.textures.propsTexture;
 			});
 			this.book.traverse((e) => {
-				e.material = this.materials.deskPropTexture;
+				e.material = this.materials.textures.propsTexture;
 			});
 
+			this.door.material = this.materials.textures.doorTexture;
+
 			this.blackFrame.traverse((e) => {
-				e.material = this.materials.frameTexture;
+				e.material = this.materials.textures.frameTexture;
 			});
-			this.haikyuPoster.material = this.materials.haikyuPoster;
-			this.mobPoster.material = this.materials.mobPoster;
+
+			this.haikyuPoster.material = this.materials.textures.haikyuTexture;
+			this.mobPoster.material = this.materials.textures.mobTexture;
 			this.polaroid.material = this.materials.polaroidTextures[0];
 
 			this.infoIcon.traverse((e) => {
-				e.material = this.materials.iconTexture;
+				e.material = this.materials.textures.iconTexture;
 			});
-			this.paddleBall.material = this.materials.ballTexture;
+			this.paddleBall.material = this.materials.textures.ballTexture;
 
-			// Create container
-			const container = document.createElement("div");
-			container.style.width = this.screenSize.width + "px";
-			container.style.height = this.screenSize.height + "px";
-			container.style.opacity = "1";
-			container.style.background = "#ff0f0f";
-
-			// // Create iframe
-			// const iframe = document.createElement("iframe");
-
-			// // Set iframe attributes
-			// // PROD
-			// iframe.src = "https://bejewelled-dodol-39bae3.netlify.app";
-
-			// iframe.style.width = this.screenSize.width + "px";
-			// iframe.style.height = this.screenSize.height + "px";
-			// iframe.style.boxSizing = "border-box";
-			// iframe.style.opacity = "1";
-			// iframe.className = "jitter";
-			// iframe.id = "computer-screen";
-			// iframe.frame = "0";
-			// iframe.title = "HeffernanOS";
-
-			// Add iframe to container
-			// container.appendChild(iframe);
-
-			// Create CSS plane
-			this.createCssPlane(container);
+			var iframeObj = this.makeElementObject(
+				"iframe",
+				this.screenSize.width,
+				this.screenSize.height
+			);
+			iframeObj.css3dObject.element.src =
+				"https://bejewelled-dodol-39bae3.netlify.app/";
+			iframeObj.css3dObject.element.setAttribute("contenteditable", "");
+			const { x, y, z } = monitor1.POSITION;
+			iframeObj.position.set(x - 12, y + 0.05, z - 0.6);
+			// iframeObj.position.x = -37.87;
+			// iframeObj.position.y = 27.92;
+			// iframeObj.position.z = 0;
+			iframeObj.rotation.y = (Math.PI * 90) / 180;
+			var scaleAmount = 0.0074;
+			iframeObj.scale.set(scaleAmount, scaleAmount, scaleAmount);
 
 			this.scene.add(this.model);
+			this.scene.add(iframeObj);
+
 			this.setIdleAnimations();
 		});
+	}
+
+	// @JoePea thanks!
+	makeElementObject(type, width, height) {
+		const obj = new THREE.Object3D();
+
+		const element = document.createElement(type);
+
+		element.style.width = width + "px";
+		element.style.height = height + "px";
+		element.style.opacity = 0.999;
+
+		var css3dObject = new CSS3DObject(element);
+		obj.css3dObject = css3dObject;
+		obj.add(css3dObject);
+
+		var material = new THREE.MeshPhongMaterial({
+			opacity: 0.15,
+			color: new THREE.Color(0x111111),
+			blending: THREE.NoBlending,
+			side: THREE.DoubleSide,
+		});
+		var geometry = new THREE.BoxGeometry(width, height, 1);
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.castShadow = true;
+		mesh.receiveShadow = true;
+		obj.lightShadowMesh = mesh;
+		obj.add(mesh);
+
+		return obj;
 	}
 
 	setIdleAnimations() {
@@ -169,43 +196,6 @@ export default class Environment {
 			duration: 0.3,
 			repeat: -1,
 		});
-	}
-
-	createCssPlane(element) {
-		// Create CSS3D object
-		const object = new CSS3DObject(element);
-
-		// copy monitor position and rotation
-		const { x, y, z } = monitor1.POSITION;
-		object.position.set(x - 0.5, y, z);
-		object.rotation.set(0, (Math.PI * 90) / 180, 0);
-
-		// Add to CSS scene
-		this.cssScene.add(object);
-
-		// Create GL plane
-		const material = new THREE.MeshLambertMaterial();
-		material.side = THREE.DoubleSide;
-		material.opacity = 0;
-		material.transparent = true;
-		material.blending = THREE.NoBlending; // <- Blending mode
-
-		// Create plane geometry
-		const geometry = new THREE.PlaneGeometry(
-			this.screenSize.width,
-			this.screenSize.height
-		);
-
-		// Create the GL plane mesh
-		const mesh = new THREE.Mesh(geometry, material);
-
-		// Copy the position, rotation and scale of the CSS plane to the GL plane
-		mesh.position.copy(object.position);
-		mesh.rotation.copy(object.rotation);
-		mesh.scale.copy(object.scale);
-
-		// Add to gl scene
-		this.scene.add(mesh);
 	}
 }
 // this.environmentMap.texture = this.resources.items.BakedTexture;
