@@ -3,9 +3,9 @@ import Environment from "./Environment";
 
 export default class World {
 	constructor() {
-		this.experinece = new Experience();
-		this.scene = this.experinece.scene;
-		this.resources = this.experinece.resources;
+		this.experience = new Experience();
+		this.scene = this.experience.scene;
+		this.resources = this.experience.resources;
 
 		// Add stuff to scene;
 		this.resources.on("ready", () => {
