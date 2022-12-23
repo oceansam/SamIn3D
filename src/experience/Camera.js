@@ -1,12 +1,10 @@
 // Libraries
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import * as dat from "lil-gui";
 import TWEEN from "@tweenjs/tween.js";
 // Utils
 import Experience from "./Experience";
 import { monitor1, polaroid, spawn } from "./Locations";
-import { socialUrl } from "../Data";
 export default class Camera {
 	constructor() {
 		this.experience = new Experience();
@@ -18,7 +16,7 @@ export default class Camera {
 	}
 	setInstance() {
 		this.instance = new THREE.PerspectiveCamera(
-			45,
+			60,
 			this.sizes.width / this.sizes.height,
 			0.1,
 			5000
@@ -79,7 +77,14 @@ export default class Camera {
 				tar = monitor1.TARGET;
 				// monitor.visible = true;
 				break;
-
+			case "Github":
+				window.open("https://github.com/oceansam", "_blank").focus();
+				break;
+			case "Linkedin":
+				window
+					.open("https://www.linkedin.com/in/samee-chowdhury", "_blank")
+					.focus();
+				break;
 			case "Polaroid":
 				pos = polaroid.POSITION;
 				tar = polaroid.TARGET;
@@ -92,22 +97,24 @@ export default class Camera {
 			default:
 				break;
 		}
-		const duration = 1000;
-		const keyframe = {
-			position: new THREE.Vector3(pos.x, pos.y, pos.z),
-			focalPoint: new THREE.Vector3(tar.x, tar.y, tar.z),
-		};
-		console.log(keyframe.position);
-		const posTween = new TWEEN.Tween(this.instance.position)
-			.to(keyframe.position, duration)
-			.easing(TWEEN.Easing.Quintic.InOut);
+		if (pos && tar) {
+			const duration = 1000;
+			const keyframe = {
+				position: new THREE.Vector3(pos.x, pos.y, pos.z),
+				focalPoint: new THREE.Vector3(tar.x, tar.y, tar.z),
+			};
+			console.log(keyframe.position);
+			const posTween = new TWEEN.Tween(this.instance.position)
+				.to(keyframe.position, duration)
+				.easing(TWEEN.Easing.Quintic.InOut);
 
-		const focTween = new TWEEN.Tween(this.controls.target)
-			.to(keyframe.focalPoint, duration)
-			.easing(TWEEN.Easing.Quintic.InOut);
+			const focTween = new TWEEN.Tween(this.controls.target)
+				.to(keyframe.focalPoint, duration)
+				.easing(TWEEN.Easing.Quintic.InOut);
 
-		posTween.start();
-		focTween.start();
+			posTween.start();
+			focTween.start();
+		}
 
 		// // Determine navigation route
 

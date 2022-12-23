@@ -44,6 +44,9 @@ export default class Experience {
 		this.menu = new Menu();
 
 		this.menu.on("updateState", (newState) => {
+			if (newState === "MenuText") {
+				return;
+			}
 			this.updateState(newState);
 			if (newState === "Spawn") {
 				this.raycast.removeHitBoxes();
