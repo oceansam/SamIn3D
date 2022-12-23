@@ -2,14 +2,19 @@ import * as THREE from "three";
 
 import Experience from "../Experience";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import { monitor1 } from "../Locations";
 import gsap from "gsap";
+const SCREEN_SIZE = { w: 5, h: 5 };
+
 export default class Environment {
 	constructor() {
 		this.experience = new Experience();
 		this.scene = this.experience.scene;
+		this.camera = this.experience.camera.instance;
+		this.cssScene = this.experience.cssScene;
 		this.resources = this.experience.resources;
 		this.materials = this.experience.materials;
-
+		this.screenSize = new THREE.Vector2(SCREEN_SIZE.w, SCREEN_SIZE.h);
 		this.resource = this.resources.items.RoomModel;
 
 		// window.addEventListener("click", (e) => {
@@ -114,25 +119,36 @@ export default class Environment {
 				e.material = this.materials.iconTexture;
 			});
 			this.paddleBall.material = this.materials.ballTexture;
-			// HTML Renderer
-			const width = "5";
-			const height = "5";
 
-			var iframe = document.createElement("iframe");
-			iframe.style.width = width + "px";
-			iframe.style.height = height + "px";
-			iframe.style.border = "0px";
-			iframe.allow = "autoplay";
-			iframe.src = ["https://www.w3schools.com"];
+			// Create container
+			const container = document.createElement("div");
+			container.style.width = this.screenSize.width + "px";
+			container.style.height = this.screenSize.height + "px";
+			container.style.opacity = "1";
+			container.style.background = "#ff0f0f";
 
-			const cssObject = new CSS3DObject(iframe);
-			const { x, y, z } = this.monitor1.position;
-			cssObject.position.set(x - 0.05, y + 0.59, z);
-			// cssObject.scale.y = 0.79;
-			// cssObject.scale.z = 0.5;
+			// // Create iframe
+			// const iframe = document.createElement("iframe");
 
-			cssObject.rotation.y = (Math.PI * 90) / 180;
-			// this.scene.add(cssObject);
+			// // Set iframe attributes
+			// // PROD
+			// iframe.src = "https://bejewelled-dodol-39bae3.netlify.app";
+
+			// iframe.style.width = this.screenSize.width + "px";
+			// iframe.style.height = this.screenSize.height + "px";
+			// iframe.style.boxSizing = "border-box";
+			// iframe.style.opacity = "1";
+			// iframe.className = "jitter";
+			// iframe.id = "computer-screen";
+			// iframe.frame = "0";
+			// iframe.title = "HeffernanOS";
+
+			// Add iframe to container
+			// container.appendChild(iframe);
+
+			// Create CSS plane
+			this.createCssPlane(container);
+
 			this.scene.add(this.model);
 			this.setIdleAnimations();
 		});
@@ -154,8 +170,44 @@ export default class Environment {
 			repeat: -1,
 		});
 	}
-}
 
+	createCssPlane(element) {
+		// Create CSS3D object
+		const object = new CSS3DObject(element);
+
+		// copy monitor position and rotation
+		const { x, y, z } = monitor1.POSITION;
+		object.position.set(x - 0.5, y, z);
+		object.rotation.set(0, (Math.PI * 90) / 180, 0);
+
+		// Add to CSS scene
+		this.cssScene.add(object);
+
+		// Create GL plane
+		const material = new THREE.MeshLambertMaterial();
+		material.side = THREE.DoubleSide;
+		material.opacity = 0;
+		material.transparent = true;
+		material.blending = THREE.NoBlending; // <- Blending mode
+
+		// Create plane geometry
+		const geometry = new THREE.PlaneGeometry(
+			this.screenSize.width,
+			this.screenSize.height
+		);
+
+		// Create the GL plane mesh
+		const mesh = new THREE.Mesh(geometry, material);
+
+		// Copy the position, rotation and scale of the CSS plane to the GL plane
+		mesh.position.copy(object.position);
+		mesh.rotation.copy(object.rotation);
+		mesh.scale.copy(object.scale);
+
+		// Add to gl scene
+		this.scene.add(mesh);
+	}
+}
 // this.environmentMap.texture = this.resources.items.BakedTexture;
 
 // this.environmentMap.texture.encoding = THREE.sRGBEncoding;

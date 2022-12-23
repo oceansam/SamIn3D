@@ -76,13 +76,8 @@ export default [
 		path: "BallBaked.jpg",
 	},
 	{
-		name: "BakedScreen1",
-		type: "textureMap",
-		path: "ScreenBaked.jpg",
-	},
-	{
 		name: "FontText",
 		type: "font",
-		path: "open-sans.json",
+		path: "kalam.json",
 	},
 ];

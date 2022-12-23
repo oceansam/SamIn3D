@@ -7,6 +7,7 @@ export default class Renderer {
 		this.canvas = this.experience.canvas;
 		this.sizes = this.experience.sizes;
 		this.scene = this.experience.scene;
+		this.cssScene = this.experience.cssScene;
 		this.camera = this.experience.camera;
 		this.setInstance();
 	}
@@ -21,6 +22,7 @@ export default class Renderer {
 		this.instanceHTML.domElement.style.position = "absolute";
 		this.instanceHTML.domElement.style.zIndex = 0;
 		this.instanceHTML.domElement.style.top = 0;
+		this.instance.outputEncoding = THREE.sRGBEncoding;
 
 		this.instance.setSize(this.sizes.width, this.sizes.height);
 		this.instanceHTML.setSize(this.sizes.width, this.sizes.height);
@@ -29,7 +31,6 @@ export default class Renderer {
 
 		const container = document.querySelector(".css3D");
 		container.appendChild(this.instanceHTML.domElement);
-		this.instance.outputEncoding = THREE.sRGBEncoding;
 	}
 
 	resize() {
@@ -39,6 +40,6 @@ export default class Renderer {
 	}
 	update() {
 		this.instance.render(this.scene, this.camera.instance);
-		this.instanceHTML.render(this.scene, this.camera.instance);
+		this.instanceHTML.render(this.cssScene, this.camera.instance);
 	}
 }

@@ -21,7 +21,6 @@ export default class Menu extends EventEmitter {
 
 		this.state = this.experience.state;
 		// Setup
-		this.resourceFont = this.resources.items.FontText;
 
 		window.addEventListener("click", (e) => {
 			console.log(this.mouse);
@@ -64,9 +63,10 @@ export default class Menu extends EventEmitter {
 				this.trigger("updateState", ["Spawn"]);
 			}
 		});
-
-		this.setHeader();
-		this.setHtmlMenu();
+		this.resources.on("texturesReady", () => {
+			this.setHeader();
+			this.setHtmlMenu();
+		});
 	}
 	resetHover() {
 		for (let i = 0; i < this.scene.children.length; i++) {
@@ -100,6 +100,7 @@ export default class Menu extends EventEmitter {
 		troikaText.position.set(pos.x, pos.y, pos.z);
 		troikaText.rotation.set(rot.x, rot.y, rot.z);
 		troikaText.name = objName;
+		troikaText.font = "IndieFlower-Regular.ttf";
 		troikaText.sync();
 		const boundingBox = new THREE.Box3();
 		boundingBox.setFromObject(troikaText);

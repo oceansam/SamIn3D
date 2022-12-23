@@ -3,8 +3,8 @@ export const spawn = {
 	TARGET: { x: -5, y: 0.5, z: 4.2 },
 };
 export const monitor1 = {
-	POSITION: { x: -3.8 + 1.2, y: 2.2 + 0.55, z: -0.05 },
-	TARGET: { x: -3.8, y: 2.2 + 0.55, z: -0.05 },
+	POSITION: { x: -3.8 + 1, y: 2.2 + 0.58, z: -0.05 },
+	TARGET: { x: -3.8, y: 2.2 + 0.58, z: -0.05 },
 };
 export const polaroid = {
 	POSITION: { x: -3.2, y: 2.2 + 0.5, z: 1.9 },

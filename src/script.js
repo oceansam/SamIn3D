@@ -273,8 +273,8 @@ const experience = new Experience(document.querySelector("canvas.webgl"));
 //  */
 // function handleClick(e) {
 // 	const mouse = new THREE.Vector2();
-	// mouse.x = (e.clientX / sizes.width) * 2 - 1;
-	// mouse.y = -(e.clientY / sizes.height) * 2 + 1;
+// mouse.x = (e.clientX / sizes.width) * 2 - 1;
+// mouse.y = -(e.clientY / sizes.height) * 2 + 1;
 // 	// Raycaster
 // 	raycaster.setFromCamera(mouse, camera);
 // 	const intersections = raycaster.intersectObjects(planes, true);

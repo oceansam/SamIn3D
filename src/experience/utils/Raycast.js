@@ -50,6 +50,11 @@ export default class Raycast extends EventEmitter {
 				this.polaroidInteractables.includes(_c.object.name)
 			);
 		}
+		if (this.state.currentState === "Polaroid") {
+			return intersects.find((_c) => {
+				_c.object.name === "MenuNav1";
+			});
+		}
 		return false;
 	}
 

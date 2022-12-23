@@ -57,9 +57,7 @@ export default class Materials {
 		this.ballTexture = new THREE.MeshBasicMaterial({
 			map: this.resources.items.BakedBall,
 		});
-		this.screenTexture = new THREE.MeshBasicMaterial({
-			map: this.resources.items.BakedScreen1,
-		});
+
 		// Polaroids
 		this.polaroidTextures = [
 			new THREE.MeshBasicMaterial({

@@ -2,17 +2,18 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import * as dat from "lil-gui";
-import gsap from "gsap";
-
+import TWEEN from "@tweenjs/tween.js";
 // Utils
 import Experience from "./Experience";
 import { monitor1, polaroid, spawn } from "./Locations";
+import { gsap } from "gsap";
 export default class Camera {
 	constructor() {
 		this.experience = new Experience();
 		this.sizes = this.experience.sizes;
 		this.scene = this.experience.scene;
 		this.canvas = this.experience.canvas;
+		this.monitor = this.scene.getObjectByName("monitorView");
 		this.setInstance();
 		this.setOrbitControls();
 	}
@@ -54,6 +55,7 @@ export default class Camera {
 	}
 
 	update() {
+		TWEEN.update();
 		this.controls.update();
 	}
 
@@ -64,11 +66,12 @@ export default class Camera {
 	animateNavigation(navName) {
 		let pos;
 		let tar;
-
+		const monitor = this.scene.getObjectByName("monitorView");
 		switch (navName) {
 			case "Projects":
 				pos = monitor1.POSITION;
 				tar = monitor1.TARGET;
+				// monitor.visible = true;
 				break;
 			case "Polaroid":
 				pos = polaroid.POSITION;
@@ -77,20 +80,39 @@ export default class Camera {
 			case "Spawn":
 				pos = spawn.POSITION;
 				tar = spawn.TARGET;
+			// monitor.visible = false;
+
 			default:
 				break;
 		}
+		const duration = 1000;
+		const keyframe = {
+			position: new THREE.Vector3(pos.x, pos.y, pos.z),
+			focalPoint: new THREE.Vector3(tar.x, tar.y, tar.z),
+		};
+		console.log(keyframe.position);
+		const posTween = new TWEEN.Tween(this.instance.position)
+			.to(keyframe.position, duration)
+			.easing(TWEEN.Easing.Quintic.InOut);
 
-		// Determine navigation route
+		const focTween = new TWEEN.Tween(this.controls.target)
+			.to(keyframe.focalPoint, duration)
+			.easing(TWEEN.Easing.Quintic.InOut);
 
-		// Animate and change camera target
-		gsap.to(this.instance.position, {
-			x: pos.x,
-			y: pos.y,
-			z: pos.z,
-		});
+		posTween.start();
+		focTween.start();
 
-		gsap.to(this.controls.target, { x: tar.x, y: tar.y, z: tar.z });
+		// // Determine navigation route
+
+		// // Animate and change camera target
+		// gsap.to(this.instance.position, {
+		// 	x: pos.x,
+		// 	y: pos.y,
+		// 	z: pos.z,
+		// });
+
+		// gsap.to(this.controls.target, { x: tar.x, y: tar.y, z: tar.z });
+
 		this.resize();
 	}
 }
