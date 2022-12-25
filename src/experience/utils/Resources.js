@@ -20,13 +20,24 @@ export default class Resources extends EventEmitter {
 	}
 
 	setLoaders() {
+		this.loadManager = new THREE.LoadingManager(
+			() => {
+				window.setTimeout(() => {
+					this.screenLoader.removeLoader();
+				}, 500);
+			},
+			(itemUrl, itemLoaded, itemsTotal) => {
+				let ratio = itemLoaded / itemsTotal;
+				this.screenLoader.updateProgress(ratio.toFixed(2) * 100);
+			}
+		);
+
 		this.loaders = {};
-		this.loaders.dracoLoader = new GLTFLoader().setDRACOLoader(
+		this.loaders.dracoLoader = new GLTFLoader(this.loadManager).setDRACOLoader(
 			new DRACOLoader().setDecoderPath("draco/")
 		);
-		this.loaders.textureLoader = new THREE.TextureLoader();
-		this.loaders.gltfLoader = new GLTFLoader();
-		this.loaders.FontLoader = new FontLoader();
+		this.loaders.textureLoader = new THREE.TextureLoader(this.loadManager);
+		this.loaders.FontLoader = new FontLoader(this.loadManager);
 	}
 
 	startLoading() {
@@ -44,6 +55,7 @@ export default class Resources extends EventEmitter {
 					// texture setup
 					file.flipY = false;
 					file.encoding = THREE.sRGBEncoding;
+
 					this.sourceLoaded(source, file);
 				});
 			}
@@ -51,23 +63,10 @@ export default class Resources extends EventEmitter {
 	}
 
 	sourceLoaded(source, file) {
-		const priorLoad = Math.floor(this.loaded / this.toLoad) * 75;
-
 		this.items[source.name] = file;
 		this.loaded++;
-		const postLoad = Math.round((this.loaded / this.toLoad) * 75);
 
-		this.screenLoader.updateProgressModel((1 - 1) * priorLoad + 1 * postLoad);
 		if (this.loaded === this.toLoad) {
-			// console.log("Finished Loading");
-			// const loadScreen = document.querySelector(".loading-screen");
-			// const loadingScreen = document.querySelector(".loader");
-			// const enterScreen = document.querySelector(".loader-start");
-			// loadingScreen.style.opacity = "0";
-			// setTimeout(() => loadingScreen.remove(), 1500);
-			// setTimeout(() => enterScreen.classList.add("fade"), 1500);
-			// enterScreen.addEventListener("click", () => loadScreen.remove());
-
 			this.trigger("ready");
 		}
 	}

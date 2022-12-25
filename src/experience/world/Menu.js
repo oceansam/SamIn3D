@@ -26,32 +26,32 @@ export default class Menu extends EventEmitter {
 			if (this.state.currentState == "MenuText") {
 				return true;
 			}
-			console.log(this.mouse);
 			this.raycast.raycaster.setFromCamera(this.mouse, this.camera);
 			const intersects = this.raycast.raycaster.intersectObjects(
 				this.scene.children
 			);
 			for (let i = 0; i < intersects.length; i++) {
 				let intersectObj = intersects[i].object;
+
 				const isLocationCurrent = this.state.currentState == intersectObj.name;
-				console.log(intersectObj.name);
 				switch (intersectObj.name) {
 					case "MenuText":
-						console.log("MENU SWITCH");
 						this.trigger("updateState", [intersectObj.name]);
 						this.trigger("menuTransition", [intersectObj.text]);
 						break;
 					case !isLocationCurrent && "Polaroid":
-						console.log("POLAROID SWITCH");
 						this.trigger("updateState", [intersectObj.name]);
 						this.trigger("menuTransition", [intersectObj.name]);
 						break;
 					case "nextButton":
-						console.log("next switch");
 						this.trigger("updatePolaroid", [1]);
 						break;
 					case "prevButton":
 						this.trigger("updatePolaroid", [-1]);
+						break;
+					case !isLocationCurrent && "FloatInfo":
+						this.trigger("updateState", [intersectObj.name]);
+						this.trigger("menuTransition", [intersectObj.name]);
 						break;
 					default:
 						break;
@@ -62,8 +62,8 @@ export default class Menu extends EventEmitter {
 		// Menu navigation back
 		window.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
-				this.trigger("menuTransition", ["Spawn"]);
 				this.trigger("updateState", ["Spawn"]);
+				this.trigger("menuTransition", ["Spawn"]);
 			}
 		});
 		this.resources.on("texturesReady", () => {
@@ -103,7 +103,7 @@ export default class Menu extends EventEmitter {
 		troikaText.position.set(pos.x, pos.y, pos.z);
 		troikaText.rotation.set(rot.x, rot.y, rot.z);
 		troikaText.name = objName;
-		troikaText.font = "IndieFlower-Regular.ttf";
+		troikaText.font = "Oswald.ttf";
 		troikaText.sync();
 		const boundingBox = new THREE.Box3();
 		boundingBox.setFromObject(troikaText);

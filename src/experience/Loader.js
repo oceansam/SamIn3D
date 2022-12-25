@@ -14,6 +14,7 @@ export default class Loader extends EventEmitter {
 		// Enter Screen
 		this.enterBtn = document.querySelector(".enter-btn");
 		this.enterScreen = document.querySelector(".enter-screen");
+
 		this.enterBtn.addEventListener("click", (e) => {
 			gsap.to(this.enterScreen, {
 				opacity: 0,
@@ -23,31 +24,18 @@ export default class Loader extends EventEmitter {
 		});
 	}
 
-	updateProgressModel(value) {
-		this.loadProgress.innerHTML = value;
-		gsap.fromTo(
-			this.loadBar,
-			{ width: this.lastProgress + "%" },
-			{ width: value + "%", duration: 1 }
-		);
-		this.lastProgress = value;
+	updateProgress(value) {
+		this.loadBar.style.transform = `scaleX(${value / 100})`;
+		this.loadProgress.textContent = value;
 	}
-	updateProgressTexture(value) {
-		this.loadProgress.innerHTML = this.lastProgress + value;
-		gsap.fromTo(
-			this.loadBar,
-			{ width: this.lastProgress + "%" },
-			{ width: this.lastProgress + value + "%", duration: 1 }
-		);
 
-		if (value + this.lastProgress >= 100) {
-			gsap.to(this.loadContainer, {
-				opacity: 0,
-				duration: 1,
-				onComplete: () => {
-					this.loadContainer.style.display = "none";
-				},
-			});
-		}
+	removeLoader() {
+		gsap.to(this.loadContainer, {
+			opacity: 0,
+			duration: 1,
+			onComplete: () => {
+				this.loadContainer.style.display = "none";
+			},
+		});
 	}
 }

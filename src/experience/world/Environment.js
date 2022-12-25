@@ -83,8 +83,7 @@ export default class Environment {
 	setEnvironmentMaterial() {
 		this.resources.on("texturesReady", () => {
 			console.log("Setting Materials");
-			// this.room.material = this.materials.roomTexture;
-			// this.desk.material = this.materials.deskTexture;
+
 			this.room.traverse((e) => {
 				e.material = this.materials.textures.roomTexture;
 			});
@@ -127,6 +126,7 @@ export default class Environment {
 			});
 			this.paddleBall.material = this.materials.textures.ballTexture;
 
+			// Iframe
 			var iframeObj = this.makeElementObject(
 				"iframe",
 				this.screenSize.width,
@@ -136,17 +136,13 @@ export default class Environment {
 				"https://bejewelled-dodol-39bae3.netlify.app/";
 			iframeObj.css3dObject.element.setAttribute("contenteditable", "");
 			const { x, y, z } = monitor1.POSITION;
-			iframeObj.position.set(x - 12, y + 0.05, z - 0.6);
-			// iframeObj.position.x = -37.87;
-			// iframeObj.position.y = 27.92;
-			// iframeObj.position.z = 0;
-			iframeObj.rotation.y = (Math.PI * 90) / 180;
+			iframeObj.position.set(x - 6.5, y + 0.05, z - 14);
+
+			iframeObj.rotation.y = (Math.PI * 45) / 180;
 			var scaleAmount = 0.0074;
 			iframeObj.scale.set(scaleAmount, scaleAmount, scaleAmount);
-
 			this.scene.add(this.model);
 			this.scene.add(iframeObj);
-
 			this.setIdleAnimations();
 		});
 	}
@@ -162,19 +158,13 @@ export default class Environment {
 		element.style.opacity = 0.999;
 
 		var css3dObject = new CSS3DObject(element);
+		console.log(obj);
 		obj.css3dObject = css3dObject;
 		obj.add(css3dObject);
 
-		var material = new THREE.MeshPhongMaterial({
-			opacity: 0.15,
-			color: new THREE.Color(0x111111),
-			blending: THREE.NoBlending,
-			side: THREE.DoubleSide,
-		});
 		var geometry = new THREE.BoxGeometry(width, height, 1);
-		var mesh = new THREE.Mesh(geometry, material);
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+		var mesh = new THREE.Mesh(geometry);
+
 		obj.lightShadowMesh = mesh;
 		obj.add(mesh);
 
@@ -198,16 +188,3 @@ export default class Environment {
 		});
 	}
 }
-// this.environmentMap.texture = this.resources.items.BakedTexture;
-
-// this.environmentMap.texture.encoding = THREE.sRGBEncoding;
-
-// this.scene.environment = this.environmentMap.texture;
-
-// this.setEnvironmentModel.updateMaterials = () => {
-// 	this.scene.traverse((child) => {
-// 		console.log(child);
-// 	});
-// };
-
-// this.setEnvironmentModel.updateMaterials();

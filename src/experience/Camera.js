@@ -4,7 +4,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import TWEEN from "@tweenjs/tween.js";
 // Utils
 import Experience from "./Experience";
-import { monitor1, polaroid, spawn } from "./Locations";
+import { info, polaroid, spawn } from "./Locations";
+import * as dat from "lil-gui";
+import { Vector3 } from "three";
 export default class Camera {
 	constructor() {
 		this.experience = new Experience();
@@ -15,46 +17,34 @@ export default class Camera {
 		this.setInstance();
 	}
 	setInstance() {
-		this.instance = new THREE.PerspectiveCamera(
-			60,
-			this.sizes.width / this.sizes.height,
-			0.1,
-			5000
-		);
+		const aspectRatio = this.sizes.width / this.sizes.height;
+		const fov = aspectRatio < 0.6 ? 100 : 45;
+		this.instance = new THREE.PerspectiveCamera(fov, aspectRatio, 0.1, 5000);
 
 		this.instance.position.copy(spawn.POSITION);
-		// const gui = new dat.GUI({
+		// this.gui = new dat.GUI({
 		// 	width: 400,
 		// });
 
-		// gui.add(this.instance.position, "x", -200, 200, 0.01);
-		// gui.add(this.instance.position, "y", -200, 200, 0.01);
-		// gui.add(this.instance.position, "z", -200, 200, 0.01);
+		// this.gui.add(this.instance.position, "x", -200, 200, 0.01);
+		// this.gui.add(this.instance.position, "y", -200, 200, 0.01);
+		// this.gui.add(this.instance.position, "z", -200, 200, 0.01);
 	}
-	// const worldIndex = this.scene.children.findIndex(
-	// 	(_child) => _child instanceof THREE.Group
-	// );
-	// console.log(this.scene.children);
-	// const mesh = this.scene.children[worldIndex].children.filter(
-	// 	(child) => child.name == "MenuNav1"
-	// )[0];
-	// console.log(mesh.position);
 
 	setOrbitControls() {
-		console.log(this.experience.renderer);
 		this.controls = new OrbitControls(
 			this.instance,
 			this.experience.renderer.rendererGl.domElement
 		);
 		const { x, y, z } = spawn.TARGET;
 		this.controls.target = new THREE.Vector3(x, y, z);
-
-		// this.controls.target = new THREE.Vector3(-45, 11, 30);
 		this.controls.enableDamping = true;
 	}
 
 	resize() {
 		this.instance.aspect = this.sizes.width / this.sizes.height;
+		this.instance.fov = this.instance.aspect < 0.6 ? 100 : 45;
+
 		this.instance.updateProjectionMatrix();
 	}
 
@@ -73,9 +63,8 @@ export default class Camera {
 		const monitor = this.scene.getObjectByName("monitorView");
 		switch (navName) {
 			case "Projects":
-				pos = monitor1.POSITION;
-				tar = monitor1.TARGET;
-				// monitor.visible = true;
+				pos = { x: -27.5, y: 27.92, z: 1 };
+				tar = { x: -45, y: 25.83, z: -28.93 };
 				break;
 			case "Github":
 				window.open("https://github.com/oceansam", "_blank").focus();
@@ -92,8 +81,11 @@ export default class Camera {
 			case "Spawn":
 				pos = spawn.POSITION;
 				tar = spawn.TARGET;
-			// monitor.visible = false;
-
+				break;
+			case "FloatInfo":
+				pos = info.POSITION;
+				tar = info.TARGET;
+				break;
 			default:
 				break;
 		}
@@ -103,7 +95,6 @@ export default class Camera {
 				position: new THREE.Vector3(pos.x, pos.y, pos.z),
 				focalPoint: new THREE.Vector3(tar.x, tar.y, tar.z),
 			};
-			console.log(keyframe.position);
 			const posTween = new TWEEN.Tween(this.instance.position)
 				.to(keyframe.position, duration)
 				.easing(TWEEN.Easing.Quintic.InOut);
@@ -115,18 +106,6 @@ export default class Camera {
 			posTween.start();
 			focTween.start();
 		}
-
-		// // Determine navigation route
-
-		// // Animate and change camera target
-		// gsap.to(this.instance.position, {
-		// 	x: pos.x,
-		// 	y: pos.y,
-		// 	z: pos.z,
-		// });
-
-		// gsap.to(this.controls.target, { x: tar.x, y: tar.y, z: tar.z });
-
 		this.resize();
 	}
 }

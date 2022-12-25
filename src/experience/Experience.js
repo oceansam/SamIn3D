@@ -18,7 +18,6 @@ import sources from "./sources";
 
 // Styles
 import "../style.css";
-import { Loader } from "three";
 
 let instance = null;
 
@@ -47,7 +46,15 @@ export default class Experience {
 			if (newState === "MenuText") {
 				return;
 			}
+			let oldState = this.state.getCurrentState();
 			this.updateState(newState);
+
+			if (newState === "FloatInfo") {
+				this.raycast.setInfoHtml();
+			}
+			if (oldState === "FloatInfo" && newState != "FloatInfo") {
+				this.raycast.removeInfoHtml();
+			}
 			if (newState === "Spawn") {
 				this.raycast.removeHitBoxes();
 			}

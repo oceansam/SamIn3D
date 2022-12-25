@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import EventEmitter from "./EventEmitter";
 import Experience from "../Experience";
-import * as dat from "lil-gui";
 
 import { gsap } from "gsap";
 import { polaroid } from "../Locations";
@@ -51,11 +50,6 @@ export default class Raycast extends EventEmitter {
 				this.polaroidInteractables.includes(_c.object.name)
 			);
 		}
-		// if (this.state.currentState === "Polaroid") {
-		// 	return intersects.find((_c) => {
-		// 		_c.object.name === "MenuNav1";
-		// 	});
-		// }
 		return false;
 	}
 
@@ -82,14 +76,9 @@ export default class Raycast extends EventEmitter {
 			hitBoxMaterial
 		);
 		this.polaroidHitBox_next.position.set(x - 0.59, y - 5, z - 0.51);
-		const gui = new dat.GUI({
-			width: 400,
-		});
 
 		this.polaroidHitBox_prev.position.set(x + 0.68, y - 5, z + 0.4);
-		gui.add(this.polaroidHitBox_prev.position, "x", -50, 20, 0.0001);
-		gui.add(this.polaroidHitBox_prev.position, "y", -50, 20, 0.0001);
-		gui.add(this.polaroidHitBox_prev.position, "z", -50, 20, 0.0001);
+
 		this.polaroidHitBox_next.name = "nextButton";
 		this.polaroidHitBox_prev.name = "prevButton";
 
@@ -112,5 +101,21 @@ export default class Raycast extends EventEmitter {
 			index = totalMaterials;
 		}
 		polaroid.material = this.materials.polaroidTextures[index];
+	}
+
+	setInfoHtml() {
+		const infoSheet = document.querySelector(".info-sheet");
+		gsap.delayedCall(0.5, () => {
+			this.openInfo = gsap.fromTo(
+				infoSheet,
+				{ height: 0 },
+				{ height: "80%", duration: 1 }
+			);
+		});
+	}
+	removeInfoHtml() {
+		this.openInfo.kill();
+		const infoSheet = document.querySelector(".info-sheet");
+		gsap.to(infoSheet, { height: 0, duration: 0.5 });
 	}
 }

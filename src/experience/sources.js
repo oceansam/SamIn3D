@@ -80,9 +80,4 @@ export default [
 		type: "textureMap",
 		path: "BallBaked.jpg",
 	},
-	{
-		name: "FontText",
-		type: "font",
-		path: "kalam.json",
-	},
 ];
