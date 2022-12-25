@@ -106,7 +106,10 @@ body {
 	right: 0;
 	color: white;
 }
-
+.control-text {
+	font-size: 1.5rem;
+	margin: 2px;
+}
 .enter-screen {
 	position: absolute;
 	z-index: 1;
@@ -114,7 +117,17 @@ body {
 	height: 100%;
 	background-color: black;
 }
-
+.control-head {
+	font-size: 2rem;
+}
+.control-text {
+	font-weight: 300 !important;
+}
+.enter-controls {
+	color: white;
+	text-align: center;
+	padding-top: 1.5rem;
+}
 .enter-btn {
 	font-size: 4rem;
 	color: #484848;
@@ -129,7 +142,6 @@ body {
 .enter-header {
 	font-size: 6rem;
 	color: white;
-	border-bottom: 2px solid white;
 	margin-bottom: 2rem;
 }
 
