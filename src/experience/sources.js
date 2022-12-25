@@ -2,7 +2,7 @@ export default [
 	{
 		name: "RoomModel",
 		type: "gltfCompressed",
-		path: "NewWebRoomTest.glb",
+		path: "NewWebRoom.glb",
 	},
 	{
 		name: "BakedRoom",
