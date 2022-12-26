@@ -11,7 +11,6 @@ export default class Materials {
 
 		this.textures = {};
 		this.resources.on("ready", () => {
-			console.log("Setting Env Materials");
 			this.toLoad = Object.keys(this.resources.items).length;
 			this.mapTextures();
 			this.resources.trigger("texturesReady");

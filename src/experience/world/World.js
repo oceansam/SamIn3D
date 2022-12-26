@@ -10,7 +10,8 @@ export default class World {
 		// Add stuff to scene;
 		this.resources.on("ready", () => {
 			// Setup
-			console.log("Starting Env");
+			console.log("%cSetting Models", "color: #bada55");
+
 			this.environment = new Environment();
 		});
 	}

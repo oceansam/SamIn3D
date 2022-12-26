@@ -82,7 +82,11 @@ export default class Environment {
 	 */
 	setEnvironmentMaterial() {
 		this.resources.on("texturesReady", () => {
-			console.log("Setting Materials");
+			console.log("%cSetting Materials", "color: #bada55");
+			console.log(
+				"%cIf you're hiring and see this message, I'd love to chat! Message me on linkedin! \nhttps://www.linkedin.com/in/samee-chowdhury/",
+				"color: #FF69B4"
+			);
 
 			this.room.traverse((e) => {
 				e.material = this.materials.textures.roomTexture;
@@ -158,7 +162,6 @@ export default class Environment {
 		element.style.opacity = 0.999;
 
 		var css3dObject = new CSS3DObject(element);
-		console.log(obj);
 		obj.css3dObject = css3dObject;
 		obj.add(css3dObject);
 

@@ -25,8 +25,9 @@ export default class Loader extends EventEmitter {
 	}
 
 	updateProgress(value) {
+		const roundVal = Math.round(value);
 		this.loadBar.style.transform = `scaleX(${value / 100})`;
-		this.loadProgress.textContent = value;
+		this.loadProgress.textContent = roundVal;
 	}
 
 	removeLoader() {

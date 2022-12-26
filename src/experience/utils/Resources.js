@@ -27,8 +27,8 @@ export default class Resources extends EventEmitter {
 				}, 500);
 			},
 			(itemUrl, itemLoaded, itemsTotal) => {
-				let ratio = itemLoaded / itemsTotal;
-				this.screenLoader.updateProgress(ratio.toFixed(2) * 100);
+				let ratio = (itemLoaded / itemsTotal) * 100;
+				this.screenLoader.updateProgress(ratio);
 			}
 		);
 
