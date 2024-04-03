@@ -1,16 +1,4 @@
-# Three.js Journey
+# SamIn3D
 
-## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
-
-``` bash
-# Install dependencies (only the first time)
-npm install
-
-# Run the local server at localhost:8080
-npm run dev
-
-# Build for production in the dist/ directory
-npm run build
-```
+Cozy room with a small dive into who I am.
+![image](https://github.com/oceansam/SamIn3D/assets/56453957/0457d64d-7852-4d6b-a0c3-07e14d00c3d5)
