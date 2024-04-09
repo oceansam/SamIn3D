@@ -43,9 +43,6 @@ export default class Materials {
 			new THREE.MeshBasicMaterial({
 				map: this.resources.items.BakedPolaroid3,
 			}),
-			new THREE.MeshBasicMaterial({
-				map: this.resources.items.BakedPolaroid4,
-			}),
 		];
 	}
 }

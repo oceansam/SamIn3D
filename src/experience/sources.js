@@ -53,20 +53,15 @@ export default [
 	{
 		name: "BakedPolaroid1",
 		type: "textureMap",
-		path: "textures/polaroid/PolaroidBaked3.jpg",
+		path: "textures/polaroid/PolaroidBaked1.jpg",
 	},
 	{
 		name: "BakedPolaroid2",
 		type: "textureMap",
-		path: "textures/polaroid/PolaroidBaked1.jpg",
+		path: "textures/polaroid/PolaroidBaked3.jpg",
 	},
 	{
 		name: "BakedPolaroid3",
-		type: "textureMap",
-		path: "textures/polaroid/PolaroidBaked2.jpg",
-	},
-	{
-		name: "BakedPolaroid4",
 		type: "textureMap",
 		path: "textures/polaroid/PolaroidBaked4.jpg",
 	},
