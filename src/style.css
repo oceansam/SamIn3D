@@ -103,24 +103,42 @@ body {
 }
 
 .container-progress {
-	margin-top: 60px;
 	color: white;
 	font-size: 2rem;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 200px;
-	transform: translate(-50%, -50%);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+.test {
+	border: 2px solid red;
 }
 .load-progress {
 	text-align: center;
 	transition: 9s ease;
 }
+.load-text-container {
+	overflow: hidden;
+}
+.load-progress-container {
+	position: absolute;
+	bottom: 1rem;
+	left: 1rem;
+	display: flex;
+	justify-content: center;
+}
 .load-bar {
 	background-color: white;
-	height: 5px;
+	height: 8px;
 	transform: scaleX(0);
 	transition: transform 1.5s;
+	width: 240px;
+}
+.load-text {
+	font-size: 4rem;
+	width: min-content;
 }
 
 .controls-overlay {
@@ -150,7 +168,33 @@ body {
 .enter-controls {
 	color: white;
 	text-align: center;
-	padding-top: 1.5rem;
+	display: flex;
+	gap: 1rem;
+}
+.enter-controls > .key {
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 4px;
+}
+.divider {
+	height: "100%";
+	border: 2px solid grey;
+}
+.control-key-letter {
+	position: absolute;
+	top: 0.25rem;
+	left: 0.25rem;
+	color: white;
+}
+.control-key {
+	position: relative;
+	border: 2px solid grey;
+	border-radius: 0.5rem;
+	width: 4rem;
+	height: 4rem;
 }
 .enter-btn {
 	font-size: 4rem;

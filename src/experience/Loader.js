@@ -27,12 +27,14 @@ export default class Loader extends EventEmitter {
 	updateProgress(value) {
 		const roundVal = Math.round(value);
 		this.loadBar.style.transform = `scaleX(${value / 100})`;
-		this.loadProgress.textContent = roundVal;
+		// this.loadProgress.textContent = roundVal;
 	}
 
 	removeLoader() {
 		gsap.to(this.loadContainer, {
 			opacity: 0,
+			ease: "circ.out",
+			duration: 35000,
 			duration: 1,
 			onComplete: () => {
 				this.loadContainer.style.display = "none";
