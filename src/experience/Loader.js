@@ -11,11 +11,14 @@ export default class Loader extends EventEmitter {
 		this.loadProgress = document.querySelector(".load-progress");
 		this.loadBar = document.querySelector(".load-bar");
 
+		this.didEnter = false;
+
 		// Enter Screen
 		this.enterBtn = document.querySelector(".enter-btn");
 		this.enterScreen = document.querySelector(".enter-screen");
 
 		this.enterBtn.addEventListener("click", (e) => {
+			this.didEnter = true;
 			gsap.to(this.enterScreen, {
 				opacity: 0,
 				display: "none",

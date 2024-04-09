@@ -15,6 +15,7 @@ export default class Raycast extends EventEmitter {
 		this.materials = this.experience.materials;
 		this.menuInteractables = ["FloatInfo", "MenuText", "Polaroid"];
 		this.polaroidInteractables = ["nextButton", "prevButton"];
+		this.resources = this.experience.resources;
 		// Setup
 		this.hoverSound = new Audio("sounds/MenuHover.mp3"); // TODO
 		this.raycaster = new THREE.Raycaster();
@@ -22,6 +23,9 @@ export default class Raycast extends EventEmitter {
 
 		// listen for mouse move & raycast intersection
 		window.addEventListener("mousemove", (e) => {
+			if (!this.resources.screenLoader.didEnter) {
+				return;
+			}
 			this.mouse.x = (e.clientX / this.sizes.width) * 2 - 1;
 			this.mouse.y = -(e.clientY / this.sizes.height) * 2 + 1;
 			this.raycaster.setFromCamera(this.mouse, this.camera);

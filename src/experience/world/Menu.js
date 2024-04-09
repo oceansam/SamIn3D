@@ -19,6 +19,7 @@ export default class Menu extends EventEmitter {
 		this.raycast = this.experience.raycast;
 		this.mouse = this.experience.raycast.mouse;
 
+		this.backBtn = document.querySelector(".back-btn");
 		this.state = this.experience.state;
 		// Setup
 
@@ -59,6 +60,10 @@ export default class Menu extends EventEmitter {
 			}
 		});
 
+		this.backBtn.addEventListener("click", (e) => {
+			this.trigger("updateState", ["Spawn"]);
+			this.trigger("menuTransition", ["Spawn"]);
+		});
 		// Menu navigation back
 		window.addEventListener("keydown", (e) => {
 			if (e.key === "Escape") {
