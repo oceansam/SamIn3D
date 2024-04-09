@@ -41,11 +41,15 @@ export default class Experience {
 		this.state = new State();
 		this.raycast = new Raycast(this.camera);
 		this.menu = new Menu();
-
+		this.backBtn = document.querySelector(".back-btn");
+		this.backBtn.style.display = "none";
 		this.menu.on("updateState", (newState) => {
+			const showBtn = newState !== "Spawn";
+			this.backBtn.style.display = showBtn ? "block" : "none";
 			if (newState === "MenuText") {
 				return;
 			}
+
 			let oldState = this.state.getCurrentState();
 			this.updateState(newState);
 
